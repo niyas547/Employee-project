@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from api.serializers import EmployeeSerializer
+from api.serializers import EmployeeSerializer,UserSerializer
 from api.models import Employee
 # Create your views here.
 
@@ -37,6 +37,15 @@ class EmployeeView(ViewSet):
         qs=Employee.objects.get(id=id)
         qs.delete()
         return Response({"message":"deleted"})
+
+class UsersView(ViewSet):
+    def create(self,request,*args,**kwargs):
+        serializer=UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
 
 
 
