@@ -3,9 +3,14 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from api.serializers import EmployeeSerializer,UserSerializer
 from api.models import Employee
+from rest_framework import authentication,permissions
 # Create your views here.
 
 class EmployeeView(ViewSet):
+    # authentication_classes =[authentication.BasicAuthentication]
+    authentication_classes =[authentication.TokenAuthentication]
+    permission_classes =[permissions.IsAuthenticated]
+
     def list(self,request,*args,**kwargs):
         qs=Employee.objects.all()
         serializer=EmployeeSerializer(qs,many=True)
